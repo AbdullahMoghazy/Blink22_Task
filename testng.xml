@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+<suite name="Blink22 Suite">
+    <test name="Blink22 Tests">
+        <classes>
+            <class name="blink22.BlogSubscriptionTest"/>
+        </classes>
+    </test>
+</suite>
