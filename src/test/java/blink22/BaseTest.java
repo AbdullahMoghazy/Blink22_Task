@@ -14,7 +14,7 @@ public class BaseTest {
     public void setUp() {
         driver = new EdgeDriver();
         driver.manage().window().maximize();
-        driver.get("https://www.blink22.com/blog");
+        driver.get("https://www.blink22.com/");
         WebElement BlogTab = driver.findElement(By.linkText("Blog"));
         BlogTab.click();
         System.out.println("Page Title: " + driver.getTitle());
