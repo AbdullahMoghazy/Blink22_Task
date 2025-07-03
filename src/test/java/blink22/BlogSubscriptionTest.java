@@ -8,50 +8,74 @@ import org.testng.annotations.Test;
 public class BlogSubscriptionTest extends BaseTest {
 
     @Test(priority = 1)
-    public void extractPlaceholders() {
-        WebElement nameField = driver.findElement(By.name("name"));
-        WebElement emailField = driver.findElement(By.name("email"));
+    public void extractPlaceholders() throws InterruptedException {
+        Thread.sleep(3000);
 
-        System.out.println("Name Placeholder: " + nameField.getAttribute("placeholder"));
-        System.out.println("Email Placeholder: " + emailField.getAttribute("placeholder"));
+        WebElement nameField = driver.findElement(By.id("fullname"));
+        String namePlaceholder = nameField.getAttribute("placeholder");
+        System.out.println("Name Placeholder: " + namePlaceholder);
+        Assert.assertEquals(namePlaceholder, "Type your name", "Full Name placeholder mismatch");
 
-        Assert.assertNotNull(nameField.getAttribute("placeholder"));
-        Assert.assertNotNull(emailField.getAttribute("placeholder"));
+        WebElement emailField = driver.findElement(By.id("email"));
+        String emailPlaceholder = emailField.getAttribute("placeholder");
+        System.out.println("Email Placeholder: " + emailPlaceholder);
+        Assert.assertEquals(emailPlaceholder, "Your email...", "Email placeholder mismatch");
+
+        System.out.println("All placeholders are correct.");
     }
 
     @Test(priority = 2)
-    public void validateRequiredFields() {
-        driver.findElement(By.xpath("//button[contains(text(),'Subscribe')]")).click();
+    public void validateRequiredFields() throws InterruptedException {
+        WebElement nameField = driver.findElement(By.id("fullname"));
+        nameField.sendKeys("Abdullahmoghazy");
+        WebElement submitButton = driver.findElement(By.className("_submit"));
+        submitButton.click();
 
-        // This assumes some visible error appears – adjust selector as needed
-        WebElement nameError = driver.findElement(By.xpath("//*[contains(text(),'name')]"));
-        WebElement emailError = driver.findElement(By.xpath("//*[contains(text(),'email')]"));
+        Thread.sleep(1000);
 
-        Assert.assertTrue(nameError.isDisplayed() || emailError.isDisplayed());
+        boolean errormessage = driver.findElements(By.className("_error-inner")).size() > 0;
+
+        Assert.assertTrue(errormessage, "Form was submitted even though email is missing!");
+
+        System.out.println("Form not submitted when required field is missing and error message appeared.");
     }
 
     @Test(priority = 3)
-    public void validateInvalidEmail() {
-        driver.findElement(By.name("name")).sendKeys("Test User");
-        WebElement emailField = driver.findElement(By.name("email"));
+    public void validateInvalidEmail() throws InterruptedException {
+        WebElement nameField = driver.findElement(By.id("fullname"));
+        nameField.clear();
+        nameField.sendKeys("Abdullahmoghazy");
+
+        WebElement emailField = driver.findElement(By.id("email"));
+        emailField.clear();
         emailField.sendKeys("abc@");
 
-        driver.findElement(By.xpath("//button[contains(text(),'Subscribe')]")).click();
+        WebElement submitButton = driver.findElement(By.className("_submit"));
+        submitButton.click();
 
-        // Replace with actual validation check
-        WebElement error = driver.findElement(By.xpath("//*[contains(text(),'valid email')]"));
+        Thread.sleep(1000);
+
+        WebElement error = driver.findElement(By.xpath("//*[contains(text(),'Enter a valid email address.')]"));
         Assert.assertTrue(error.isDisplayed());
+        System.out.println("Form not submitted when entering invalid email address and error message appeared.");
+
     }
 
     @Test(priority = 4)
     public void validSubmission() throws InterruptedException {
-        driver.findElement(By.name("email")).clear();
-        driver.findElement(By.name("email")).sendKeys("testuser123@example.com");
+        WebElement nameField = driver.findElement(By.id("fullname"));
+        nameField.clear();
+        nameField.sendKeys("Abdullahmoghazy");
 
-        driver.findElement(By.xpath("//button[contains(text(),'Subscribe')]")).click();
-        Thread.sleep(2000); // Replace with proper wait
+        WebElement emailField = driver.findElement(By.id("email"));
+        emailField.clear();
+        emailField.sendKeys("abdullahmoghazy@icloud.com");
 
-        WebElement success = driver.findElement(By.className("form-success-message"));
+        WebElement submitButton = driver.findElement(By.className("_submit"));
+        submitButton.click();
+        Thread.sleep(3000);
+
+        WebElement success = driver.findElement(By.className("_form-thank-you"));
         System.out.println("Success Message: " + success.getText());
         Assert.assertTrue(success.isDisplayed());
     }
