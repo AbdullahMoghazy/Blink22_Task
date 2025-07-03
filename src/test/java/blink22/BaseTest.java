@@ -11,12 +11,13 @@ public class BaseTest {
     protected WebDriver driver;
 
     @BeforeClass
-    public void setUp() {
+    public void setUp() throws InterruptedException {
         driver = new EdgeDriver();
         driver.manage().window().maximize();
         driver.get("https://www.blink22.com/");
         WebElement BlogTab = driver.findElement(By.linkText("Blog"));
         BlogTab.click();
+        Thread.sleep(2000);
         System.out.println("Page Title: " + driver.getTitle());
     }
 
