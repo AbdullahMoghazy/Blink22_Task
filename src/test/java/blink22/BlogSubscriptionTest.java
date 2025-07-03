@@ -26,12 +26,13 @@ public class BlogSubscriptionTest extends BaseTest {
 
     @Test(priority = 2)
     public void validateRequiredFields() throws InterruptedException {
+        Thread.sleep(3000);
         WebElement nameField = driver.findElement(By.id("fullname"));
         nameField.sendKeys("Abdullahmoghazy");
-        WebElement submitButton = driver.findElement(By.className("_submit"));
+        WebElement submitButton = driver.findElement(By.id("_form_5_submit"));
         submitButton.click();
 
-        Thread.sleep(1000);
+        Thread.sleep(3000);
 
         boolean errormessage = driver.findElements(By.className("_error-inner")).size() > 0;
 
@@ -50,7 +51,7 @@ public class BlogSubscriptionTest extends BaseTest {
         emailField.clear();
         emailField.sendKeys("abc@");
 
-        WebElement submitButton = driver.findElement(By.className("_submit"));
+        WebElement submitButton = driver.findElement(By.id("_form_5_submit"));
         submitButton.click();
 
         Thread.sleep(1000);
@@ -71,7 +72,8 @@ public class BlogSubscriptionTest extends BaseTest {
         emailField.clear();
         emailField.sendKeys("abdullahmoghazy@icloud.com");
 
-        WebElement submitButton = driver.findElement(By.className("_submit"));
+        WebElement submitButton = driver.findElement(By.id("_form_5_submit"));
+        Thread.sleep(2000);
         submitButton.click();
         Thread.sleep(3000);
 
